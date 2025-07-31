@@ -3,7 +3,7 @@ layout: default
 ---
 
 <!-- Cyberpunk Canvas Background -->
-<canvas id="bg-canvas" style="width:100%;height:100vh;position:fixed;z-index:-1;"></canvas>
+<canvas id="bg-canvas"></canvas>
 
 <!-- 중앙 닉네임 + 글리치 효과 -->
 <div class="glitch" data-text="ZZEROFINDD DFIR LAB">ZZEROFINDD DFIR LAB</div>
@@ -36,7 +36,7 @@ cursorCanvas.style.position = 'fixed';
 cursorCanvas.style.top = 0;
 cursorCanvas.style.left = 0;
 cursorCanvas.style.pointerEvents = 'none';
-cursorCanvas.style.zIndex = 9999;
+cursorCanvas.style.zIndex = 9998;
 cursorCanvas.width = window.innerWidth;
 cursorCanvas.height = window.innerHeight;
 const ctx = cursorCanvas.getContext('2d');
@@ -61,43 +61,24 @@ function drawCursorParticles(){
 drawCursorParticles();
 </script>
 
-<!-- Hacking Text Click Effect -->
-<div id="hack-text-container" style="position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:10000;"></div>
+<!-- Matrix 해킹 콘솔 효과 -->
+<canvas id="matrix" style="position:fixed;top:0;left:0;z-index:9997;pointer-events:none;"></canvas>
 <script>
-document.addEventListener('click', e => {
-  const container = document.getElementById('hack-text-container');
-  const hackText = document.createElement('div');
-  hackText.innerText = randomHackText();
-  hackText.style.position = 'absolute';
-  hackText.style.left = e.clientX + 'px';
-  hackText.style.top = e.clientY + 'px';
-  hackText.style.color = '#0f0';
-  hackText.style.fontSize = '12px';
-  hackText.style.fontFamily = 'monospace';
-  hackText.style.textShadow = '0 0 5px #0f0';
-  hackText.style.opacity = 1;
-  hackText.style.transition = 'transform 1s ease-out, opacity 1s ease-out';
-  container.appendChild(hackText);
-
-  setTimeout(() => {
-    hackText.style.transform = 'translateY(-50px)';
-    hackText.style.opacity = 0;
-  }, 10);
-  setTimeout(() => hackText.remove(), 1000);
-});
-
-function randomHackText(){
-  const phrases = [
-    'ACCESS GRANTED',
-    'PORT SCAN INITIATED',
-    'HASH DUMP COMPLETE',
-    'BRUTE FORCE SUCCESS',
-    'SQLi DETECTED',
-    'MEM DUMP SAVED',
-    'SESSION HIJACKED',
-    'IOC MATCH FOUND',
-    'PAYLOAD EXECUTED'
-  ];
-  return phrases[Math.floor(Math.random()*phrases.length)];
+const matrixCanvas = document.getElementById("matrix");
+const mtx = matrixCanvas.getContext("2d");
+matrixCanvas.height = window.innerHeight;
+matrixCanvas.width = window.innerWidth;
+let letters = Array(256).join(1).split("");
+function drawMatrix(){
+  mtx.fillStyle = "rgba(0,0,0,0.05)";
+  mtx.fillRect(0,0,matrixCanvas.width,matrixCanvas.height);
+  mtx.fillStyle = "#0f0";
+  letters.map((y, index) => {
+    let text = String.fromCharCode(3e4 + Math.random()*33);
+    let x = index * 10;
+    mtx.fillText(text, x, y);
+    letters[index] = y > 758 + Math.random()*1e4 ? 0 : y + 10;
+  });
 }
+setInterval(drawMatrix, 33);
 </script>

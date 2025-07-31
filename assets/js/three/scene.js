@@ -14,10 +14,11 @@ function init(){
     scene.background = new THREE.Color(0x000010);
 
     camera = new THREE.PerspectiveCamera(60, window.innerWidth/window.innerHeight, 1, 1000);
-    camera.position.set(0, 0, 120);
+    camera.position.set(0, 0, 80); // 가까이 당김
 
     renderer = new THREE.WebGLRenderer({canvas: document.getElementById('dfirCanvas'), antialias:true});
     renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setClearColor(0x000010, 1);
 
     controls = new OrbitControls(camera, renderer.domElement);
     controls.enableZoom = false;
@@ -30,8 +31,8 @@ function init(){
 
     for(let i=0; i<particleCount; i++){
         let angle = Math.random() * Math.PI * 2;
-        let radius = 40 + Math.random()*30;
-        let height = (Math.random() - 0.5) * 80;
+        let radius = 25 + Math.random()*20;
+        let height = (Math.random() - 0.5) * 60;
 
         positions[i*3] = Math.cos(angle) * radius;
         positions[i*3+1] = height;
@@ -47,7 +48,7 @@ function init(){
     geometry.setAttribute('position', new THREE.BufferAttribute(positions,3));
     geometry.setAttribute('color', new THREE.BufferAttribute(colors,3));
 
-    const material = new THREE.PointsMaterial({size:0.6, vertexColors:true});
+    const material = new THREE.PointsMaterial({size:1.2, vertexColors:true});
     particles = new THREE.Points(geometry, material);
     scene.add(particles);
 

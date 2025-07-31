@@ -2,38 +2,102 @@
 layout: default
 ---
 
-<div id="vanta-bg" style="width:100%;height:100vh;position:fixed;z-index:-1;"></div>
+<!-- Cyberpunk Canvas Background -->
+<canvas id="bg-canvas" style="width:100%;height:100vh;position:fixed;z-index:-1;"></canvas>
 
-<h1 style="text-align:center; color:white; margin-top:50px;">
-  🛡️ ZZEROFINDD DFIR Blog
-</h1>
-<p style="text-align:center; color:#ccc;">
-  Incident Response | Digital Forensics | Malware Analysis
-</p>
+<!-- 중앙 닉네임 + 글리치 효과 -->
+<div class="glitch" data-text="ZZEROFINDD DFIR LAB">ZZEROFINDD DFIR LAB</div>
 
-<ul>
-{% for post in site.posts %}
-  <li>
-    <a href="{{ post.url }}" style="color:white;">{{ post.title }}</a> - {{ post.date | date: "%Y-%m-%d" }}
-  </li>
-{% endfor %}
-</ul>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/vanta/dist/vanta.net.min.js"></script>
+<!-- Particle.js for BG -->
+<script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
 <script>
-VANTA.NET({
-  el: "#vanta-bg",
-  mouseControls: true,
-  touchControls: true,
-  minHeight: 200.00,
-  minWidth: 200.00,
-  scale: 1.00,
-  scaleMobile: 1.00,
-  color: 0xffffff,
-  backgroundColor: 0x000000,
-  points: 15.00,
-  maxDistance: 25.00,
-  spacing: 18.00
-})
+particlesJS("bg-canvas", {
+  "particles": {
+    "number": {"value":120},
+    "color": {"value":"#00ffff"},
+    "shape": {"type":"circle"},
+    "opacity": {"value":0.5},
+    "size": {"value":3},
+    "line_linked": {"enable":true,"distance":150,"color":"#00ffff","opacity":0.4,"width":1},
+    "move": {"enable":true,"speed":2}
+  },
+  "interactivity": {
+    "detect_on":"canvas",
+    "events":{"onhover":{"enable":true,"mode":"repulse"}}
+  }
+});
+</script>
+
+<!-- Neon Cursor Trail -->
+<script>
+const cursorCanvas = document.createElement('canvas');
+document.body.appendChild(cursorCanvas);
+cursorCanvas.style.position = 'fixed';
+cursorCanvas.style.top = 0;
+cursorCanvas.style.left = 0;
+cursorCanvas.style.pointerEvents = 'none';
+cursorCanvas.style.zIndex = 9999;
+cursorCanvas.width = window.innerWidth;
+cursorCanvas.height = window.innerHeight;
+const ctx = cursorCanvas.getContext('2d');
+let particles = [];
+
+document.addEventListener('mousemove', e => {
+  particles.push({x:e.clientX, y:e.clientY, alpha:1});
+});
+
+function drawCursorParticles(){
+  ctx.clearRect(0,0,cursorCanvas.width,cursorCanvas.height);
+  particles.forEach((p,i)=>{
+    ctx.beginPath();
+    ctx.arc(p.x,p.y,2,0,Math.PI*2);
+    ctx.fillStyle=`rgba(0,255,255,${p.alpha})`;
+    ctx.fill();
+    p.alpha -=0.02;
+    if(p.alpha<=0) particles.splice(i,1);
+  });
+  requestAnimationFrame(drawCursorParticles);
+}
+drawCursorParticles();
+</script>
+
+<!-- Hacking Text Click Effect -->
+<div id="hack-text-container" style="position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:10000;"></div>
+<script>
+document.addEventListener('click', e => {
+  const container = document.getElementById('hack-text-container');
+  const hackText = document.createElement('div');
+  hackText.innerText = randomHackText();
+  hackText.style.position = 'absolute';
+  hackText.style.left = e.clientX + 'px';
+  hackText.style.top = e.clientY + 'px';
+  hackText.style.color = '#0f0';
+  hackText.style.fontSize = '12px';
+  hackText.style.fontFamily = 'monospace';
+  hackText.style.textShadow = '0 0 5px #0f0';
+  hackText.style.opacity = 1;
+  hackText.style.transition = 'transform 1s ease-out, opacity 1s ease-out';
+  container.appendChild(hackText);
+
+  setTimeout(() => {
+    hackText.style.transform = 'translateY(-50px)';
+    hackText.style.opacity = 0;
+  }, 10);
+  setTimeout(() => hackText.remove(), 1000);
+});
+
+function randomHackText(){
+  const phrases = [
+    'ACCESS GRANTED',
+    'PORT SCAN INITIATED',
+    'HASH DUMP COMPLETE',
+    'BRUTE FORCE SUCCESS',
+    'SQLi DETECTED',
+    'MEM DUMP SAVED',
+    'SESSION HIJACKED',
+    'IOC MATCH FOUND',
+    'PAYLOAD EXECUTED'
+  ];
+  return phrases[Math.floor(Math.random()*phrases.length)];
+}
 </script>

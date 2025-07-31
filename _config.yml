@@ -1,8 +1,7 @@
-title: "ZZEROFINDD DFIR Blog"
-description: "Incident Response & Digital Forensics"
+title: "ZZEROFINDD Cyber DFIR Lab"
+description: "Incident Response | Digital Forensics | Malware Analysis"
 baseurl: ""
 url: "https://zzerofindd.github.io"
-
 
 markdown: kramdown
 highlighter: rouge
@@ -19,10 +18,3 @@ defaults:
       layout: post
       author: "ZZEROFINDD"
       comments: true
-
-categories:
-  - Incident Response
-  - Malware Analysis
-  - Forensics
-  - Web Attack
-  - Case Study

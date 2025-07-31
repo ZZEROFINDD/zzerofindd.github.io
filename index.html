@@ -2,83 +2,57 @@
 layout: default
 ---
 
-<!-- Cyberpunk Canvas Background -->
-<canvas id="bg-canvas"></canvas>
+<!-- Canvas Wave Background -->
+<canvas id="waveCanvas"></canvas>
 
-<!-- 중앙 닉네임 + 글리치 효과 -->
-<div class="glitch" data-text="ZZEROFINDD DFIR LAB">ZZEROFINDD DFIR LAB</div>
+<!-- 중앙 Hero 텍스트 -->
+<div class="hero-text">
+  <h1>ZZEROFINDD DFIR LAB</h1>
+  <p>Incident Response • Digital Forensics • Malware Analysis</p>
+</div>
 
-<!-- Particle.js for BG -->
-<script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+<!-- 하단 DFIR 키워드 슬라이드 -->
+<div class="marquee">
+  <span>CVE • IOC • INCIDENT RESPONSE • MALWARE ANALYSIS • DFIR • FORENSIC TIMELINE • LOG ANALYSIS • CVE • IOC • INCIDENT RESPONSE • MALWARE ANALYSIS • DFIR • FORENSIC TIMELINE • LOG ANALYSIS</span>
+</div>
+
 <script>
-particlesJS("bg-canvas", {
-  "particles": {
-    "number": {"value":120},
-    "color": {"value":"#00ffff"},
-    "shape": {"type":"circle"},
-    "opacity": {"value":0.5},
-    "size": {"value":3},
-    "line_linked": {"enable":true,"distance":150,"color":"#00ffff","opacity":0.4,"width":1},
-    "move": {"enable":true,"speed":2}
-  },
-  "interactivity": {
-    "detect_on":"canvas",
-    "events":{"onhover":{"enable":true,"mode":"repulse"}}
+// Wave Canvas Effect
+const canvas = document.getElementById('waveCanvas');
+const ctx = canvas.getContext('2d');
+
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+let wave = {
+  y: canvas.height / 2,
+  length: 0.015,
+  amplitude: 60,
+  frequency: 0.01
+};
+
+let increment = wave.frequency;
+
+function animate() {
+  requestAnimationFrame(animate);
+  ctx.fillStyle = "rgba(0,0,30,0.8)";
+  ctx.fillRect(0,0,canvas.width,canvas.height);
+
+  ctx.beginPath();
+  ctx.moveTo(0, canvas.height/2);
+  for (let i = 0; i < canvas.width; i++) {
+    ctx.lineTo(i, wave.y + Math.sin(i * wave.length + increment) * wave.amplitude * Math.sin(increment));
   }
-});
-</script>
+  ctx.strokeStyle = "rgba(0,180,255,0.8)";
+  ctx.lineWidth = 2;
+  ctx.stroke();
 
-<!-- Neon Cursor Trail -->
-<script>
-const cursorCanvas = document.createElement('canvas');
-document.body.appendChild(cursorCanvas);
-cursorCanvas.style.position = 'fixed';
-cursorCanvas.style.top = 0;
-cursorCanvas.style.left = 0;
-cursorCanvas.style.pointerEvents = 'none';
-cursorCanvas.style.zIndex = 9998;
-cursorCanvas.width = window.innerWidth;
-cursorCanvas.height = window.innerHeight;
-const ctx = cursorCanvas.getContext('2d');
-let particles = [];
-
-document.addEventListener('mousemove', e => {
-  particles.push({x:e.clientX, y:e.clientY, alpha:1});
-});
-
-function drawCursorParticles(){
-  ctx.clearRect(0,0,cursorCanvas.width,cursorCanvas.height);
-  particles.forEach((p,i)=>{
-    ctx.beginPath();
-    ctx.arc(p.x,p.y,2,0,Math.PI*2);
-    ctx.fillStyle=`rgba(0,255,255,${p.alpha})`;
-    ctx.fill();
-    p.alpha -=0.02;
-    if(p.alpha<=0) particles.splice(i,1);
-  });
-  requestAnimationFrame(drawCursorParticles);
+  increment += wave.frequency;
 }
-drawCursorParticles();
-</script>
+animate();
 
-<!-- Matrix 해킹 콘솔 효과 -->
-<canvas id="matrix" style="position:fixed;top:0;left:0;z-index:9997;pointer-events:none;"></canvas>
-<script>
-const matrixCanvas = document.getElementById("matrix");
-const mtx = matrixCanvas.getContext("2d");
-matrixCanvas.height = window.innerHeight;
-matrixCanvas.width = window.innerWidth;
-let letters = Array(256).join(1).split("");
-function drawMatrix(){
-  mtx.fillStyle = "rgba(0,0,0,0.05)";
-  mtx.fillRect(0,0,matrixCanvas.width,matrixCanvas.height);
-  mtx.fillStyle = "#0f0";
-  letters.map((y, index) => {
-    let text = String.fromCharCode(3e4 + Math.random()*33);
-    let x = index * 10;
-    mtx.fillText(text, x, y);
-    letters[index] = y > 758 + Math.random()*1e4 ? 0 : y + 10;
-  });
-}
-setInterval(drawMatrix, 33);
+window.addEventListener('resize', () => {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+});
 </script>

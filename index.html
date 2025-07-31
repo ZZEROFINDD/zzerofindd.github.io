@@ -2,57 +2,12 @@
 layout: default
 ---
 
-<!-- Canvas Wave Background -->
-<canvas id="waveCanvas"></canvas>
+<canvas id="dfirCanvas"></canvas>
 
-<!-- 중앙 Hero 텍스트 -->
+<!-- Hero Layer -->
 <div class="hero-text">
-  <h1>ZZEROFINDD DFIR LAB</h1>
-  <p>Incident Response • Digital Forensics • Malware Analysis</p>
+  <h1 class="glitch" data-text="ZZEROFINDD DFIR LAB">ZZEROFINDD DFIR LAB</h1>
+  <p id="dfir-keywords"></p>
 </div>
 
-<!-- 하단 DFIR 키워드 슬라이드 -->
-<div class="marquee">
-  <span>CVE • IOC • INCIDENT RESPONSE • MALWARE ANALYSIS • DFIR • FORENSIC TIMELINE • LOG ANALYSIS • CVE • IOC • INCIDENT RESPONSE • MALWARE ANALYSIS • DFIR • FORENSIC TIMELINE • LOG ANALYSIS</span>
-</div>
-
-<script>
-// Wave Canvas Effect
-const canvas = document.getElementById('waveCanvas');
-const ctx = canvas.getContext('2d');
-
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
-
-let wave = {
-  y: canvas.height / 2,
-  length: 0.015,
-  amplitude: 60,
-  frequency: 0.01
-};
-
-let increment = wave.frequency;
-
-function animate() {
-  requestAnimationFrame(animate);
-  ctx.fillStyle = "rgba(0,0,30,0.8)";
-  ctx.fillRect(0,0,canvas.width,canvas.height);
-
-  ctx.beginPath();
-  ctx.moveTo(0, canvas.height/2);
-  for (let i = 0; i < canvas.width; i++) {
-    ctx.lineTo(i, wave.y + Math.sin(i * wave.length + increment) * wave.amplitude * Math.sin(increment));
-  }
-  ctx.strokeStyle = "rgba(0,180,255,0.8)";
-  ctx.lineWidth = 2;
-  ctx.stroke();
-
-  increment += wave.frequency;
-}
-animate();
-
-window.addEventListener('resize', () => {
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
-});
-</script>
+<script type="module" src="{{ site.baseurl }}/assets/js/three/scene.js"></script>

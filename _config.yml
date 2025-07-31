@@ -5,16 +5,3 @@ url: "https://zzerofindd.github.io"
 
 markdown: kramdown
 highlighter: rouge
-
-collections:
-  posts:
-    output: true
-
-defaults:
-  - scope:
-      path: ""
-      type: "posts"
-    values:
-      layout: post
-      author: "ZZEROFINDD"
-      comments: true
